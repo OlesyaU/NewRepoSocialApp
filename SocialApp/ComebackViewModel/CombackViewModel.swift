@@ -8,12 +8,21 @@
 import FirebaseAuth
 
 final class CombackViewModel: ComebackViewModelProtocol {
+    enum State {
+        case correct
+        case wrong
+    }
     private let model = DataBase.shared
     let welcomeLabelTitle = "С возвращением"
     let welcomeNewUserTitle = "Добро пожаловать !"
     let secondLabelTitle = "Введите номер телефона \n для входа в приложение"
     let placeholderString = " +7 _ _ _  _ _ _  _ _  _ _"
     let buttonTitle = "ПОДТВЕРДИТЬ"
+    var state: State  = .correct {
+        didSet{
+            state = .wrong
+        }
+    }
 
     func checkUser(by phone: String) -> Profile? {
         guard validate(phone: phone) else {
@@ -24,7 +33,7 @@ final class CombackViewModel: ComebackViewModelProtocol {
         return model.getProfile(by: phone) ? model.testProfile : nil
     }
 
-    func validate(phone: String) -> Bool {
+   private func validate(phone: String) -> Bool {
         let PHONE_REGEX = "[+][7][ ][0-9]{3}[ ][0-9]{3}[ ][0-9]{2}[ ][0-9]{2}"
         let phoneTest = NSPredicate(format: "SELF MATCHES %@", PHONE_REGEX)
         let result = phoneTest.evaluate(with: phone)
@@ -40,6 +49,7 @@ final class CombackViewModel: ComebackViewModelProtocol {
                 return
             }
         }
+        print("Current user UID \(Auth.auth().currentUser?.uid)")
     }
 }
 

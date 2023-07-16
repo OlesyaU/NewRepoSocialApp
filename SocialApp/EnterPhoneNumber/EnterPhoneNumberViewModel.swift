@@ -32,6 +32,7 @@ class EnterPhoneNumberViewModel {
         Auth.auth().createUser(withEmail: "\(number)@mail.ru", password: string) { authResult, error in
         }
         state = .correct
+        print("Current user UID \(Auth.auth().currentUser?.uid)")
     }
 }
 

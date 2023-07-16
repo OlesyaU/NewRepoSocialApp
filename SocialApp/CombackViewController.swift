@@ -119,7 +119,9 @@ final class CombackViewController: UIViewController {
         if viewModel?.checkUser(by: numberFromTextField) != nil {
             let feedViewController = FeedTableViewController()
             navigationController?.pushViewController(feedViewController, animated: true)
+            viewModel?.state = .correct
         } else {
+            viewModel?.state = .wrong
             showAleart()
         }
     }
@@ -222,8 +224,9 @@ extension CombackViewController: UITextFieldDelegate {
 
 extension CombackViewController {
     private func showAleart () {
-        let aleart = UIAlertController(title: "OOPPPSS", message: "The pass is wrong", preferredStyle: .alert)
-        let action = UIAlertAction(title:  "OMG", style: .destructive, handler: { [weak self ] _ in
+       
+        let aleart = UIAlertController(title: "OOPPPSS", message: "The phone number is incorrect. Please write correctly", preferredStyle: .alert)
+        let action = UIAlertAction(title:  "OMG! SURE THING", style: .destructive, handler: { [weak self ] _ in
             self?.navigationController?.popViewController(animated: true)
         })
         aleart.addAction(action)
