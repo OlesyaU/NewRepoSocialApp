@@ -24,7 +24,7 @@ class ProfileViewController: UIViewController, FloatingPanelControllerDelegate {
         self.profileViewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         profileViewModel.personalDataViewModel.delegate = self
-        layout()
+        setupConstraints()
         setupBindings()
         configureTableView()
     }
@@ -61,7 +61,7 @@ class ProfileViewController: UIViewController, FloatingPanelControllerDelegate {
         navigationItem.leftBarButtonItem?.tintColor = profileViewModel.iconsColor
     }
 
-    private func layout() {
+    private func setupConstraints() {
         view.addSubview(tableView)
         view.addSubview(containerView)
         containerView.backgroundColor = .clear

@@ -7,7 +7,6 @@
 
 import UIKit
 
-// Set color for image
 extension UIImage {
     func imageWithColor(color: UIColor) -> UIImage {
         UIGraphicsBeginImageContextWithOptions(self.size, false, self.scale)

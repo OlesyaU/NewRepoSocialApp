@@ -48,7 +48,7 @@ final class ProfileActionView: UIView {
     
     init(){
         super.init(frame: .zero)
-        layout()
+        setupConstraints()
     }
 
     required init?(coder: NSCoder) {
@@ -63,7 +63,7 @@ final class ProfileActionView: UIView {
         }
     }
 
-    private func layout() {
+    private func setupConstraints() {
         addSubview(typeContainerStack)
         [countLabel, typeTitleLabel, typeContainerStack].forEach({$0.forAutolayout()})
         [countLabel,typeTitleLabel].forEach { typeContainerStack.addArrangedSubview($0)}

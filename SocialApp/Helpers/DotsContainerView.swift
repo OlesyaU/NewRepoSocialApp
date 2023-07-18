@@ -6,6 +6,7 @@
 //
 
 import UIKit
+
 final class DotsContainerView: UIView {
 
     private var constraintsView: [NSLayoutConstraint] = []

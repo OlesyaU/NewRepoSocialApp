@@ -66,14 +66,14 @@ final class ProfileInformationViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard indexPath.row < viewModel.items.count else { return UITableViewCell()}
         switch viewModel.items[indexPath.row] {
-        case let .textField(vm):
+        case let .textField(viewModel):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: EnterDataTextFieldCell.identifier) as? EnterDataTextFieldCell else { return UITableViewCell()
             }
-            cell.configure(with: vm)
+            cell.configure(with: viewModel)
             return cell
-        case let .genderPicker(vm):
+        case let .genderPicker(viewModel):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ProfileInformationSelectGenderCell.identifier) as? ProfileInformationSelectGenderCell else { return UITableViewCell() }
-            cell.configure(with: vm)
+            cell.configure(with: viewModel)
             return cell
         }
     }

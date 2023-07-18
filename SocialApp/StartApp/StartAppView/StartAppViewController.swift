@@ -63,7 +63,6 @@ class StartAppViewController: UIViewController {
     }
 
     // MARK: - Helpers
-
     private func addSubviews() {
         [startScreenImage, registerButton, alreadyHaveAccountButton].forEach({$0.forAutolayout()})
         [startScreenImage, registerButton, alreadyHaveAccountButton].forEach({$0.placed(on: view)})
@@ -152,7 +151,6 @@ extension StartAppViewController {
 // MARK: - SetThemeColorProtocol
 extension StartAppViewController: SetThemeColorProtocol {
     func setColor() {
-        // TODO: - Add theme if need
         view.backgroundColor = .backgroundPrimary
         registerButton.setTitleColor(.contentColor, for: .normal)
         alreadyHaveAccountButton.tintColor = .textPrimary

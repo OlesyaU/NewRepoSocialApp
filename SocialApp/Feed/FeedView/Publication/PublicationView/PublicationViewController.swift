@@ -24,7 +24,7 @@ class PublicationViewController: UIViewController, FloatingPanelControllerDelega
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        layout()
+        setupConstraints()
         configureTableView()
     }
 
@@ -49,7 +49,7 @@ class PublicationViewController: UIViewController, FloatingPanelControllerDelega
         )
         navigationItem.leftBarButtonItem?.tintColor = viewModel.colorNickname
     }
-    private func layout() {
+    private func setupConstraints() {
         [tableView, containerView, leaveCommentView].forEach({$0.forAutolayout()})
         [tableView, containerView, leaveCommentView].forEach({view.addSubview($0)})
 

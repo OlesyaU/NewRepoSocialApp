@@ -67,14 +67,14 @@ final class CommentView: UIView {
 
     init() {
         super.init(frame: .zero)
-        layout()
+        setupConstraints()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func layout() {
+    private func setupConstraints() {
         [authorPhoto,  authorNickLabel, commentLabel, dateLabel, likesCountLabel, likesIcon, answerLabel].forEach {$0.forAutolayout()}
         [authorPhoto,  authorNickLabel, commentLabel, dateLabel, likesCountLabel, likesIcon, answerLabel].forEach {addSubview($0)}
         cellConstraints.append(contentsOf: [

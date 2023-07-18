@@ -86,7 +86,6 @@ class DataBase {
         return profiles
     }
 
-
     private func saveDataToUserDefaults(){
         do {
             let encoder = JSONEncoder()
@@ -112,7 +111,7 @@ class DataBase {
         return nil
     }
 
- func getProfile(by phone: String) -> Bool {
+    func getProfile(by phone: String) -> Bool {
         let number = "+7 999 999 99 99"
         return phone == number ? true : false
     }
@@ -120,9 +119,8 @@ class DataBase {
     /// Description -  real posts of test user are commented
 
     func getPosts() -> [Post] {
-//        testProfile.subscriptions.flatMap(\.posts)
+        //        testProfile.subscriptions.flatMap(\.posts)
         profiles.flatMap(\.posts).shuffled()
     }
-    
 }
 

@@ -58,7 +58,7 @@ final class ProfileIconButton: UIView {
         iconImage.tintColor = viewModel.itemsColor
         
         isUserInteractionEnabled = true
-        layout()
+        setupConstraints()
         addGestureRecognizer(tapGesture)
         setContentHuggingPriority(.required, for: .horizontal)
         setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -73,7 +73,7 @@ final class ProfileIconButton: UIView {
         onTap()
     }
     
-    private func layout() {
+    private func setupConstraints() {
         [stackView, iconlabel, iconImage].forEach { $0.forAutolayout() }
         [iconImage, iconlabel].forEach { stackView.addArrangedSubview($0) }
         addSubview(stackView)

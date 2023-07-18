@@ -1,8 +1,9 @@
-import FirebaseAuth
+//import FirebaseAuth
+
+import Foundation
 
 class EnterPhoneNumberViewModel {
 
-    // TODO: - Обработка ошибок ввода
     enum State {
         case input
         case error
@@ -11,7 +12,7 @@ class EnterPhoneNumberViewModel {
 
     private var verificationId: String?
     private var verificationCode: String?
-    private var user: User?
+//    private var user: User?
 
     let welcomeLabelTitle = "ЗАРЕГИСТРИРОВАТЬСЯ"
     let pushNumberUserTitle = "Введите номер"
@@ -19,20 +20,31 @@ class EnterPhoneNumberViewModel {
     let placeholderString = "+7 _ _ _  _ _ _  _ _  _ _"
     let buttonTitle = "ДАЛЕЕ"
     let privacyLabelTitle = "Нажимая кнопку \"Далее\"  Вы принимаете \n пользовательское Соглашение и политику конфиденциальности"
+    var codejjfjf: ((String)-> Void)?
     private var state: State = .input {
         didSet {
             viewModelChanged?()
         }
     }
-
+    var passPhoneNumber: ((_ code : String) -> Void)?
     var viewModelChanged: (() -> Void)?
 
-    func testing(string: String){
-        let number = Int.random(in: 0...99)
-        Auth.auth().createUser(withEmail: "\(number)@mail.ru", password: string) { authResult, error in
+    func enterNumberPhone(phone: String)                   {
+        if  validate(phone: phone) {
+            let code = String(describing: Array(repeating: Int.random(in: 0...9), count: 6)).applyPatternOnNumbers(pattern: "# # # # # #", replacementCharacter: "#")
+            state = .correct
+            ConfirmControllerViewModel().registerNewUser(phone: phone, generatedCode: code)
+  print("New user phone \(phone), code \(code)")
+        } else {
+            state = .error
         }
-        state = .correct
-        print("Current user UID \(Auth.auth().currentUser?.uid)")
+    }
+
+    private func validate(phone: String) -> Bool {
+        let PHONE_REGEX = "[+][7][ ][0-9]{3}[ ][0-9]{3}[ ][0-9]{2}[ ][0-9]{2}"
+        let phoneTest = NSPredicate(format: "SELF MATCHES %@", PHONE_REGEX)
+        let result = phoneTest.evaluate(with: phone)
+        return result
     }
 }
 

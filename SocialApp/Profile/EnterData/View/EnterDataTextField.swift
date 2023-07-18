@@ -20,7 +20,7 @@ final class EnterDataTextField: UIView {
 
     init() {
         super.init(frame: .zero)
-        layout()
+        setupConstraints()
     }
 
     @available(*, unavailable)
@@ -28,7 +28,7 @@ final class EnterDataTextField: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func layout() {
+    private func setupConstraints() {
         [typeTitleLabel, textFieldContainer].forEach { $0.placed(on: self) }
         dataTextField.placed(on: textFieldContainer)
         [typeTitleLabel, dataTextField, textFieldContainer].forEach { $0.forAutolayout() }

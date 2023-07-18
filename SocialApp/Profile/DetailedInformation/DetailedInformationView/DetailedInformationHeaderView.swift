@@ -15,7 +15,7 @@ final class DetailedInformationHeaderView: UIView {
         let image = UIImageView()
         image.isUserInteractionEnabled = true
         image.contentMode = .scaleAspectFill
-        let tap = UITapGestureRecognizer(target: self, action: #selector(backTap))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(backItemTapped))
         image.addGestureRecognizer(tap)
         return image
     }()
@@ -28,14 +28,14 @@ final class DetailedInformationHeaderView: UIView {
 
     init() {
         super.init(frame: .zero)
-        layout()
+        setupConstraints()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func layout() {
+    private func setupConstraints(){
         [iconImage, titleLabel].forEach({$0.forAutolayout()})
         [iconImage, titleLabel].forEach({addSubview($0)})
         viewConstraints.append(contentsOf: [
@@ -60,7 +60,7 @@ final class DetailedInformationHeaderView: UIView {
         iconImage.image = viewModel.backIcon
     }
 
-    @objc private func backTap() {
+    @objc private func backItemTapped() {
         viewModel?.backSelected()
     }
 }

@@ -8,7 +8,7 @@
 import UIKit
 struct MainTabBarViewModel {
     let tintColorChosenItem = AppColors.orange
-    let generlTitle =  Title.general.titleString
+    let generalTitle =  Title.general.titleString
     let profileTitle = Title.profile.titleString
     let savedTitle = Title.saved.titleString
     let generalIcon = IconsName.house.nameIcon

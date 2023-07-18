@@ -14,7 +14,7 @@ class ProfileIconButtonsCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupUI()
+        setupConstraints()
     }
 
     required init?(coder: NSCoder) {
@@ -25,7 +25,7 @@ class ProfileIconButtonsCell: UITableViewCell {
         buttonsStackView.configure(buttonViewModels: viewModels)
     }
 
-    private func setupUI() {
+    private func setupConstraints() {
         buttonsStackView.placed(on: contentView)
         cellConstraint.append(contentsOf: [
             buttonsStackView.pinTop(to: contentView.topAnchor),

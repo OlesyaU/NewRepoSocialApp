@@ -25,7 +25,7 @@ final class PhotoGalleryViewController: UIViewController {
     init(viewModel: PhotoGalleryViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        layout()
+        setupConstraints()
     }
 
     required init?(coder: NSCoder) {
@@ -37,7 +37,7 @@ final class PhotoGalleryViewController: UIViewController {
         configureNavigation()
     }
 
-    private func layout() {
+    private func setupConstraints() {
         view.addSubview(collection)
         collection.forAutolayout()
 

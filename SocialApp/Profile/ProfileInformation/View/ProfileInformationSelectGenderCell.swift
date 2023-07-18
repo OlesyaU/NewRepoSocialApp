@@ -19,7 +19,7 @@ final class ProfileInformationSelectGenderCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        layout()
+        setupConstraints()
     }
 
     @available(*, unavailable)
@@ -27,7 +27,7 @@ final class ProfileInformationSelectGenderCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func layout() {
+    private func setupConstraints() {
         let views = [
             selectGenderLabel,
             selectMaleButton,

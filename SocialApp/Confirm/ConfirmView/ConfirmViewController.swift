@@ -37,7 +37,7 @@ class ConfirmViewController: UIViewController {
         return label
     }()
 
-    private lazy var phoneNumberField: UITextField = {
+    private lazy var codeTextField: UITextField = {
         let field = UITextField()
         field.textAlignment = .center
         field.delegate = self
@@ -90,7 +90,7 @@ class ConfirmViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.tintColor = .black
         navigationItem.setLeftBarButton(UIBarButtonItem(image: UIImage(systemName: "arrow.left"), style: .plain, target: self, action: #selector(backItemAction)), animated: true)
-        phoneNumberField.text = ""
+        codeTextField.text = ""
     }
 
     // MARK: - Helpers
@@ -101,8 +101,8 @@ class ConfirmViewController: UIViewController {
     }
 
     private func addSubviews() {
-        [confirmLabel, sentInfoLabel, numberLabel, badge, phoneNumberField, registrationButton, readyImage].forEach({$0.forAutolayout()})
-        [confirmLabel, sentInfoLabel, numberLabel, badge, phoneNumberField, registrationButton, readyImage].forEach({$0.placed(on: view)})
+        [confirmLabel, sentInfoLabel, numberLabel, badge, codeTextField, registrationButton, readyImage].forEach({$0.forAutolayout()})
+        [confirmLabel, sentInfoLabel, numberLabel, badge, codeTextField, registrationButton, readyImage].forEach({$0.placed(on: view)})
     }
 
     private func configure(){
@@ -119,28 +119,41 @@ class ConfirmViewController: UIViewController {
     }
 
     private func setUpTextField() {
-        phoneNumberField.delegate = self
-        phoneNumberField.cornerRadius()
-        phoneNumberField.layer.borderWidth = 0.8
-        phoneNumberField.layer.borderColor = viewModel?.blackColor.cgColor
-        phoneNumberField.keyboardType = .phonePad
+        codeTextField.delegate = self
+        codeTextField.cornerRadius()
+        codeTextField.layer.borderWidth = 0.8
+        codeTextField.layer.borderColor = viewModel?.blackColor.cgColor
+        codeTextField.keyboardType = .phonePad
         let centeredParagraphStyle = NSMutableParagraphStyle()
         centeredParagraphStyle.alignment = .center
-        phoneNumberField.attributedPlaceholder = NSAttributedString(
+        codeTextField.attributedPlaceholder = NSAttributedString(
             string: viewModel?.placeholderString ?? "",
             attributes: [.paragraphStyle: centeredParagraphStyle]
         )
-        phoneNumberField.clearButtonMode = .whileEditing
+        codeTextField.clearButtonMode = .whileEditing
     }
 
     private func checkButtonTapped() {
-        let confirmViewController = MainTabBarController()
-        navigationController?.setNavigationBarHidden(true, animated: true)
-        navigationController?.setViewControllers([confirmViewController], animated: false)
+        guard let code = codeTextField.text else { return }
+print("checkButtonTapped\(code)")
+   
+
+     let codeNext = code.applyPatternOnNumbers(pattern: "# # # # # #", replacementCharacter: "#")
+        if viewModel?.validate(code: codeNext) == true {
+pushMainController()
+            } else {
+               showAleart()
+            }
+
     }
 
     @objc private func backItemAction(){
         navigationController?.popViewController(animated: true)
+    }
+    private func pushMainController() {
+        let confirmViewController = MainTabBarController()
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
+        self.navigationController?.setViewControllers([confirmViewController], animated: false)
     }
 }
 
@@ -153,39 +166,39 @@ extension ConfirmViewController {
                 sentInfoLabel.pinTopLessThanOrEqualTo(to: confirmLabel.bottomAnchor, inset: Constants.inset56),
                 numberLabel.pinTop(to: sentInfoLabel.bottomAnchor),
 
-                badge.pinLeading(to: phoneNumberField.leadingAnchor),
-                badge.pinBottom(to: phoneNumberField.topAnchor),
+                badge.pinLeading(to: codeTextField.leadingAnchor),
+                badge.pinBottom(to: codeTextField.topAnchor),
 
                 confirmLabel.pinTopLessThanOrEqualTo(to: view.topAnchor, inset: Constants.inset8 * 10),
-                phoneNumberField.pinTrailing(to: view.safeAreaLayoutGuide.trailingAnchor, inset: Constants.inset16),
+                codeTextField.pinTrailing(to: view.safeAreaLayoutGuide.trailingAnchor, inset: Constants.inset16),
 
-                registrationButton.pinTopLessThanOrEqualTo(to: phoneNumberField.bottomAnchor, inset: 100),
+                registrationButton.pinTopLessThanOrEqualTo(to: codeTextField.bottomAnchor, inset: 100),
                 registrationButton.pinHeight(equalTo: 44),
-                registrationButton.pinLeading(to: phoneNumberField.leadingAnchor),
-                registrationButton.pinTrailing(to: phoneNumberField.trailingAnchor),
+                registrationButton.pinLeading(to: codeTextField.leadingAnchor),
+                registrationButton.pinTrailing(to: codeTextField.trailingAnchor),
                 readyImage.pinBottom(to: view.bottomAnchor, inset: Constants.inset16),
             ]
         )
 
         landscapeConstraints.append(
             contentsOf: [
-                confirmLabel.pinLeading(to: phoneNumberField.leadingAnchor),
+                confirmLabel.pinLeading(to: codeTextField.leadingAnchor),
                 confirmLabel.pinTrailing(to: view.trailingAnchor, inset: Constants.inset16),
 
-                sentInfoLabel.pinLeading(to: phoneNumberField.leadingAnchor),
+                sentInfoLabel.pinLeading(to: codeTextField.leadingAnchor),
                 sentInfoLabel.pinTrailing(to: view.safeAreaLayoutGuide.trailingAnchor, inset: Constants.inset16),
 
-                phoneNumberField.pinHeight(equalTo: 44),
-                phoneNumberField.pinTop(to: numberLabel.bottomAnchor, inset: 24),
-                phoneNumberField.pinLeading(to: readyImage.trailingAnchor, inset: Constants.inset16),
+                codeTextField.pinHeight(equalTo: 44),
+                codeTextField.pinTop(to: numberLabel.bottomAnchor, inset: 24),
+                codeTextField.pinLeading(to: readyImage.trailingAnchor, inset: Constants.inset16),
 
                 numberLabel.pinLeading(to: readyImage.trailingAnchor, inset: Constants.inset16),
-                numberLabel.pinTrailing(to: phoneNumberField.trailingAnchor, inset: Constants.inset16),
+                numberLabel.pinTrailing(to: codeTextField.trailingAnchor, inset: Constants.inset16),
 
                 readyImage.pinLeading(to: view.safeAreaLayoutGuide.leadingAnchor,inset: Constants.inset16),
                 readyImage.pinTop(to: confirmLabel.topAnchor),
                 readyImage.pinWidth(equalTo: UIScreen.main.bounds.width / 2),
-                registrationButton.pinTopLessThanOrEqualTo(to: phoneNumberField.bottomAnchor, inset: Constants.inset56)
+                registrationButton.pinTopLessThanOrEqualTo(to: codeTextField.bottomAnchor, inset: Constants.inset56)
             ]
         )
 
@@ -201,10 +214,10 @@ extension ConfirmViewController {
                 numberLabel.pinTop(to: sentInfoLabel.bottomAnchor),
                 numberLabel.pinLeading(to: sentInfoLabel.leadingAnchor),
 
-                phoneNumberField.pinHeight(equalTo: Constants.inset56),
-                phoneNumberField.pinTop(to: numberLabel.bottomAnchor, inset: Constants.inset56),
-                phoneNumberField.pinLeading(to: numberLabel.leadingAnchor, inset: Constants.inset16),
-                phoneNumberField.pinTrailing(to: numberLabel.trailingAnchor, inset: Constants.inset16),
+                codeTextField.pinHeight(equalTo: Constants.inset56),
+                codeTextField.pinTop(to: numberLabel.bottomAnchor, inset: Constants.inset56),
+                codeTextField.pinLeading(to: numberLabel.leadingAnchor, inset: Constants.inset16),
+                codeTextField.pinTrailing(to: numberLabel.trailingAnchor, inset: Constants.inset16),
 
                 readyImage.pinTop(to: registrationButton.bottomAnchor, inset: 32),
                 readyImage.pinLeading(to: registrationButton.leadingAnchor),
@@ -245,7 +258,7 @@ extension ConfirmViewController {
 extension ConfirmViewController: SetThemeColorProtocol {
     func setColor() {
         view.backgroundColor = .backgroundPrimary
-        phoneNumberField.backgroundColor = .textFieldColor
+        codeTextField.backgroundColor = .textFieldColor
         registrationButton.tintColor = .contentColor
     }
 }
@@ -256,5 +269,16 @@ extension ConfirmViewController: UITextFieldDelegate {
         textField.text = text.applyPatternOnNumbers(pattern: "# # # # # #", replacementCharacter: "#")
         let newLength = text.count
         return newLength <= 10 || string.isEmpty
+    }
+}
+extension ConfirmViewController {
+    private func showAleart () {
+
+        let aleart = UIAlertController(title: "OOPPPSS", message: "The code is incorrect. Please write correctly", preferredStyle: .alert)
+        let action = UIAlertAction(title:  "OMG! SURE THING", style: .destructive, handler: { [weak self ] _ in
+            self?.codeTextField.text = ""
+        })
+        aleart.addAction(action)
+        present(aleart, animated: true)
     }
 }

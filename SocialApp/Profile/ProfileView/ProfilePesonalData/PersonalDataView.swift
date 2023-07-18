@@ -108,7 +108,7 @@ final class PersonalDataView: UIView {
 
     init() {
         super.init(frame: .zero)
-        layout()
+        setupConstraints()
 }
 
     required init?(coder: NSCoder) {
@@ -178,7 +178,7 @@ messageButton.pinTop(to: moreInfoButton.bottomAnchor, inset: Constants.sideInset
         moreInfoButton.applyIcon(systemName: viewModel?.moreInfoButtonIcon ?? "", tintColor: .systemOrange)
     }
 
-    private func layout() {
+    private func setupConstraints() {
         [nikNameLabel, fullNameLabel, avatarImage,  professionLabel, moreInfoButton].forEach({
             $0.forAutolayout()
         })

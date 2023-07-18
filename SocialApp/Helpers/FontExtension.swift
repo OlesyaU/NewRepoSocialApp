@@ -6,6 +6,7 @@
 //
 
 import UIKit
+
 extension UIFont {
     static let textBold = UIFont(name: "AvenirNextCondensed-Bold", size: 18)
     static let textRegular = UIFont(name: "AvenirNextCondensed-Regular", size: 16)

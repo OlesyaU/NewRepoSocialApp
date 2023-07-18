@@ -12,7 +12,7 @@ final class EnterDataTextFieldCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        layout()
+        setupConstraints()
     }
 
     @available(*, unavailable)
@@ -30,7 +30,7 @@ final class EnterDataTextFieldCell: UITableViewCell {
         enterDataView.setup(with: viewModel)
     }
 
-    private func layout() {
+    private func setupConstraints() {
         enterDataView.placed(on: contentView)
         enterDataView.forAutolayout()
 

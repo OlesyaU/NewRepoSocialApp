@@ -22,8 +22,8 @@ class MainTabBarController: UITabBarController {
 
     func createFeedViewController() -> UINavigationController {
         let feed = FeedTableViewController()
-        feed.title = mainTabBarViewModel.generlTitle
-        feed.tabBarItem = UITabBarItem(title: mainTabBarViewModel.generlTitle, image: UIImage(systemName: mainTabBarViewModel.generalIcon), tag: 0)
+        feed.title = mainTabBarViewModel.generalTitle
+        feed.tabBarItem = UITabBarItem(title: mainTabBarViewModel.generalTitle, image: UIImage(systemName: mainTabBarViewModel.generalIcon), tag: 0)
         return UINavigationController(rootViewController: feed)
     }
 

@@ -19,6 +19,7 @@ final class FeedCell: UITableViewCell {
         image.addGestureRecognizer(tapGesture)
         return image
     }()
+    
     private lazy var image: UIImageView = {
         let image = UIImageView()
         image.contentMode = .scaleAspectFill
@@ -105,20 +106,23 @@ final class FeedCell: UITableViewCell {
         return image
     }()
 
+
+    private var landscapeConstraints: [NSLayoutConstraint] = []
+    private var portraitConstraints: [NSLayoutConstraint] = []
     private var commonConstraints: [NSLayoutConstraint] = []
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        layout()
+        setupConstraints()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func layout() {
+    private func setupConstraints() {
         [contentHeaderCellView, authorPhoto,authorNameLabel, professionLabel, image, descriptionLabel, commentsLabel, likesLabel,   likesIcon, commentsIcon, dotsImage, bookmarkIcon].forEach {$0.forAutolayout()}
-        [contentHeaderCellView, image, descriptionLabel, commentsLabel, likesLabel, authorNameLabel, professionLabel, authorPhoto, likesIcon, commentsIcon, dotsImage, bookmarkIcon].forEach {contentView.addSubview($0)}
+        [contentHeaderCellView, image, descriptionLabel, commentsLabel, likesLabel, authorNameLabel, professionLabel, authorPhoto, likesIcon, commentsIcon, dotsImage, bookmarkIcon].forEach ({$0.placed(on: contentView)})
 
         commonConstraints.append(
             contentsOf: [
@@ -196,6 +200,24 @@ final class FeedCell: UITableViewCell {
                 bookmarkIcon.pinBottom(to: contentView.bottomAnchor, inset: Constants.inset16)
             ]
         )
+        landscapeConstraints.append(
+            contentsOf: [
+
+            ]
+        )
+
+        portraitConstraints.append(
+            contentsOf: [
+
+            ]
+        )
+        if Orientation.isLandscape {
+            NSLayoutConstraint.deactivate(portraitConstraints)
+            NSLayoutConstraint.activate(landscapeConstraints)
+        } else {
+            NSLayoutConstraint.deactivate(landscapeConstraints)
+            NSLayoutConstraint.activate(portraitConstraints)
+        }
         NSLayoutConstraint.activate(commonConstraints)
     }
 
@@ -233,7 +255,6 @@ final class FeedCell: UITableViewCell {
     @objc private func bookmarkTapped() {
         print("bookmarkTapped gesture worked")
         viewModel?.bookmarkTapped()
-//        TODO: - implement isSaved maybe later
     }
 
     func configureFavorite(favoritePost: FavoritePost) {

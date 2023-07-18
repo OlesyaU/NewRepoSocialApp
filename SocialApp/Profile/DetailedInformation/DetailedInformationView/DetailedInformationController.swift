@@ -21,7 +21,7 @@ final class DetailedInformationController: UIViewController {
 
         viewModel.headerViewModel.delegate = self
         headerView.configure(viewModel: viewModel.headerViewModel)
-        layout()
+        setupConstraints()
         setTableView()
     }
 
@@ -39,7 +39,7 @@ final class DetailedInformationController: UIViewController {
         navigationController?.setNavigationBarHidden(false, animated: false)
     }
 
-    private func layout() {
+    private func setupConstraints() {
         [headerView, tableView].forEach({$0.forAutolayout()})
         [headerView, tableView].forEach({view.addSubview($0)})
         NSLayoutConstraint.activate([

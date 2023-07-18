@@ -17,7 +17,7 @@ class SavedViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(FeedCell.self, forCellReuseIdentifier: FeedCell.identifier)
-        layout()
+        setupConstraints()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -25,7 +25,7 @@ class SavedViewController: UIViewController {
         tableView.reloadData()
     }
 
-    private func layout() {
+    private func setupConstraints() {
         tableView.forAutolayout()
         view.addSubview(tableView)
         NSLayoutConstraint.activate([

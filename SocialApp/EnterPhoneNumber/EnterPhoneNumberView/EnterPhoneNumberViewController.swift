@@ -141,10 +141,14 @@ class EnterPhoneNumberViewController: UIViewController {
 
     // MARK: - Navigation
     private func registrationButtonTapped() {
-        // TODO: - Add phone check
         guard let phoneNumber = phoneNumberField.text else { return }
-        viewModel?.testing(string: phoneNumber)
-        pushConfirmController()
+        print(phoneNumber.count)
+        if !phoneNumber.isEmpty, phoneNumber.count == 16 {
+ viewModel?.enterNumberPhone(phone: phoneNumber)
+            pushConfirmController()
+        } else {
+showAleart()
+        }
     }
 
     private func pushConfirmController() {
@@ -265,5 +269,17 @@ extension EnterPhoneNumberViewController: UITextFieldDelegate {
 
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
         return true
+    }
+}
+
+extension EnterPhoneNumberViewController {
+    private func showAleart () {
+
+        let aleart = UIAlertController(title: "OOPPPSS", message: "The phone number is incorrect. Please write correctly", preferredStyle: .alert)
+        let action = UIAlertAction(title:  "OMG! SURE THING", style: .destructive, handler: { [weak self ] _ in
+            self?.phoneNumberField.text = ""
+        })
+        aleart.addAction(action)
+        present(aleart, animated: true)
     }
 }

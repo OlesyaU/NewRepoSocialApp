@@ -13,7 +13,7 @@ class ProfileActionsCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupUI()
+        setupConstraints()
     }
 
     required init?(coder: NSCoder) {
@@ -24,7 +24,7 @@ class ProfileActionsCell: UITableViewCell {
         actionsStackView.configure(buttonViewModels: viewModels)
     }
     
-    private func setupUI() {
+    private func setupConstraints() {
         actionsStackView.placed(on: contentView)
         cellConstraint.append(contentsOf: [
             actionsStackView.pinTop(to: contentView.topAnchor),
