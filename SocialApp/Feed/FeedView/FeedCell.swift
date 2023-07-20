@@ -26,7 +26,6 @@ final class FeedCell: UITableViewCell {
         image.isUserInteractionEnabled = true
         let tapToImage = UITapGestureRecognizer(target: self, action: #selector(onPostImageTapped))
         image.addGestureRecognizer(tapToImage)
-
         return image
     }()
 
@@ -121,7 +120,7 @@ final class FeedCell: UITableViewCell {
     }
 
     private func setupConstraints() {
-        [contentHeaderCellView, authorPhoto,authorNameLabel, professionLabel, image, descriptionLabel, commentsLabel, likesLabel,   likesIcon, commentsIcon, dotsImage, bookmarkIcon].forEach {$0.forAutolayout()}
+        [contentHeaderCellView, authorPhoto, authorNameLabel, professionLabel, image, descriptionLabel, commentsLabel, likesLabel,   likesIcon, commentsIcon, dotsImage, bookmarkIcon].forEach {$0.forAutolayout()}
         [contentHeaderCellView, image, descriptionLabel, commentsLabel, likesLabel, authorNameLabel, professionLabel, authorPhoto, likesIcon, commentsIcon, dotsImage, bookmarkIcon].forEach ({$0.placed(on: contentView)})
 
         commonConstraints.append(
@@ -135,50 +134,42 @@ final class FeedCell: UITableViewCell {
                 authorPhoto.pinWidth(equalTo: Constants.inset56),
                 authorPhoto.pinTop(to: contentView.topAnchor,inset: Constants.inset16),
                 authorPhoto.pinLeading(to: contentView.leadingAnchor, inset:  Constants.inset16),
-                authorPhoto.pinBottom(to: descriptionLabel.topAnchor, inset: Constants.inset16),
 
-                authorNameLabel.pinTop(to: contentView.topAnchor, inset: Constants.inset16),
-                authorNameLabel.pinHeight(equalTo: Constants.inset56 / 2),
+                authorNameLabel.pinTop(to: authorPhoto.topAnchor),
                 authorNameLabel.pinLeading(to: authorPhoto.trailingAnchor, inset: Constants.inset16),
-                authorNameLabel.pinTrailing(to: contentView.trailingAnchor),
-                authorNameLabel.pinBottom(to: professionLabel.topAnchor),
+                authorNameLabel.pinTrailing(to: dotsImage.leadingAnchor),
 
                 professionLabel.pinTop(to: authorNameLabel.bottomAnchor),
                 professionLabel.pinLeading(to: authorNameLabel.leadingAnchor),
-                professionLabel.pinHeight(equalTo: Constants.inset56 / 2),
-                professionLabel.pinTrailing(to: dotsImage.leadingAnchor, inset: Constants.inset16),
+                professionLabel.pinTrailing(to: dotsImage.leadingAnchor),
                 professionLabel.pinBottom(to: authorPhoto.bottomAnchor),
 
-                dotsImage.pinTop(to:contentView.topAnchor,inset: Constants.inset16),
+                dotsImage.pinTop(to: authorPhoto.topAnchor),
                 dotsImage.pinBottom(to: authorPhoto.bottomAnchor),
                 dotsImage.pinWidth(equalTo: 20),
                 dotsImage.pinTrailing(to: contentView.trailingAnchor, inset: Constants.inset16),
-                dotsImage.pinLeading(to: professionLabel.trailingAnchor),
 
 
                 descriptionLabel.pinTop(to: authorPhoto.bottomAnchor, inset: Constants.inset16),
-                descriptionLabel.pinLeading(to: contentView.leadingAnchor),
-                descriptionLabel.pinTrailing(to: contentView.trailingAnchor),
+                descriptionLabel.pinLeading(to: contentView.safeAreaLayoutGuide.leadingAnchor),
+                descriptionLabel.pinTrailing(to: contentView.safeAreaLayoutGuide.trailingAnchor),
                 descriptionLabel.pinHeight(equalTo: 100),
-                descriptionLabel.pinBottom(to: image.topAnchor),
 
 
                 image.pinTop(to: descriptionLabel.bottomAnchor, inset: Constants.inset16),
-                image.pinLeading(to: contentView.leadingAnchor),
-                image.pinTrailing(to: contentView.trailingAnchor),
+                image.pinLeading(to: contentView.safeAreaLayoutGuide.leadingAnchor),
+                image.pinTrailing(to: contentView.safeAreaLayoutGuide.trailingAnchor),
                 image.pinHeight(equalTo: UIScreen.main.bounds.width),
+                image.pinWidth(equalTo: UIScreen.main.bounds.width),
 
 
                 likesIcon.pinTop(to: image.bottomAnchor, inset: Constants.inset16),
                 likesIcon.pinLeading(to: contentView.leadingAnchor, inset: Constants.inset16),
                 likesIcon.pinHeight(equalTo: Constants.inset56 / 2),
                 likesIcon.pinWidth(equalTo: Constants.inset56 / 2),
-                likesIcon.pinBottom(to: contentView.bottomAnchor, inset: Constants.inset16),
 
 
                 likesLabel.pinTop(to: image.bottomAnchor, inset: Constants.inset16),
-                likesLabel.pinHeight(equalTo: Constants.inset56 / 2),
-                likesLabel.pinWidth(equalTo: Constants.inset56),
                 likesLabel.pinLeading(to: likesIcon.trailingAnchor, inset: Constants.inset8),
                 likesLabel.pinBottom(to: contentView.bottomAnchor, inset: Constants.inset16),
 
@@ -187,8 +178,8 @@ final class FeedCell: UITableViewCell {
                 commentsIcon.pinLeading(to: likesLabel.trailingAnchor, inset: Constants.inset16),
                 commentsIcon.pinBottom(to: contentView.bottomAnchor, inset: Constants.inset16),
 
+                commentsLabel.pinTop(to: likesLabel.topAnchor),
                 commentsLabel.pinHeight(equalTo: Constants.inset56 / 2),
-                commentsLabel.pinWidth(equalTo: Constants.inset56),
                 commentsLabel.pinLeading(to: commentsIcon.trailingAnchor, inset: Constants.inset8),
                 commentsLabel.pinBottom(to: contentView.bottomAnchor, inset: Constants.inset16),
 

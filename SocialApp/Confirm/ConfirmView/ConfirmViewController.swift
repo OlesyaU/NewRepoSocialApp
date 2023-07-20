@@ -135,21 +135,18 @@ class ConfirmViewController: UIViewController {
 
     private func checkButtonTapped() {
         guard let code = codeTextField.text else { return }
-print("checkButtonTapped\(code)")
-   
-
-     let codeNext = code.applyPatternOnNumbers(pattern: "# # # # # #", replacementCharacter: "#")
+       let codeNext = code.applyPatternOnNumbers(pattern: "# # # # # #", replacementCharacter: "#")
         if viewModel?.validate(code: codeNext) == true {
-pushMainController()
-            } else {
-               showAleart()
-            }
-
+            pushMainController()
+        } else {
+            showAleart()
+        }
     }
 
     @objc private func backItemAction(){
         navigationController?.popViewController(animated: true)
     }
+
     private func pushMainController() {
         let confirmViewController = MainTabBarController()
         self.navigationController?.setNavigationBarHidden(true, animated: true)
@@ -271,9 +268,9 @@ extension ConfirmViewController: UITextFieldDelegate {
         return newLength <= 10 || string.isEmpty
     }
 }
+
 extension ConfirmViewController {
     private func showAleart () {
-
         let aleart = UIAlertController(title: "OOPPPSS", message: "The code is incorrect. Please write correctly", preferredStyle: .alert)
         let action = UIAlertAction(title:  "OMG! SURE THING", style: .destructive, handler: { [weak self ] _ in
             self?.codeTextField.text = ""

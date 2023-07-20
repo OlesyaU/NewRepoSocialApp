@@ -37,7 +37,7 @@ final class StoryCollectionViewCell: UICollectionViewCell {
             friendAvatar.pinTop(to: contentView.topAnchor),
             friendAvatar.pinLeading(to: contentView.leadingAnchor),
             friendAvatar.pinBottom(to: contentView.bottomAnchor),
-            friendAvatar.pinTrailing(to: contentView.trailingAnchor)
+            friendAvatar.pinTrailing(to: contentView.trailingAnchor),
         ]
         )
         NSLayoutConstraint.activate(constraintsForCell)

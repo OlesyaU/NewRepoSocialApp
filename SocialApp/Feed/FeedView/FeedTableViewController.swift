@@ -51,6 +51,7 @@ final class FeedTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
+    
 }
 
 extension FeedTableViewController: FeedCellDelegate {

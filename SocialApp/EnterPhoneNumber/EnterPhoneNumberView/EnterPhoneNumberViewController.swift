@@ -84,7 +84,7 @@ class EnterPhoneNumberViewController: UIViewController {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         configure()
-}
+    }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -142,17 +142,17 @@ class EnterPhoneNumberViewController: UIViewController {
     // MARK: - Navigation
     private func registrationButtonTapped() {
         guard let phoneNumber = phoneNumberField.text else { return }
-        print(phoneNumber.count)
         if !phoneNumber.isEmpty, phoneNumber.count == 16 {
- viewModel?.enterNumberPhone(phone: phoneNumber)
+            viewModel?.enterNumberPhone(phone: phoneNumber)
             pushConfirmController()
         } else {
-showAleart()
+            showAleart()
         }
     }
 
     private func pushConfirmController() {
-        let model = ConfirmControllerViewModel()
+        guard let viewModel = viewModel else {return}
+        let model = ConfirmControllerViewModel(viewModel: viewModel)
         let confirmViewController = ConfirmViewController(with: model)
         navigationController?.pushViewController(confirmViewController, animated: true)
     }
@@ -247,7 +247,7 @@ extension EnterPhoneNumberViewController {
 }
 
 extension EnterPhoneNumberViewController: SetThemeColorProtocol {
-   func setColor() {
+    func setColor() {
         view.backgroundColor = .backgroundPrimary
         phoneNumberField.backgroundColor = .textFieldColor
         confirmButton.tintColor = .contentColor
@@ -273,8 +273,8 @@ extension EnterPhoneNumberViewController: UITextFieldDelegate {
 }
 
 extension EnterPhoneNumberViewController {
-    private func showAleart () {
 
+    private func showAleart () {
         let aleart = UIAlertController(title: "OOPPPSS", message: "The phone number is incorrect. Please write correctly", preferredStyle: .alert)
         let action = UIAlertAction(title:  "OMG! SURE THING", style: .destructive, handler: { [weak self ] _ in
             self?.phoneNumberField.text = ""

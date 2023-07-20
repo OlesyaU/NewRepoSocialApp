@@ -33,14 +33,15 @@ final class FirstFeedCell: UITableViewCell {
     }
 
     private func setupConstraints() {
-        contentView.addSubview(collectionView)
         collectionView.forAutolayout()
+        contentView.addSubview(collectionView)
         constaintsForCell.append(contentsOf:[
             collectionView.pinTop(to: contentView.topAnchor),
             collectionView.pinBottom(to: contentView.bottomAnchor),
             collectionView.pinLeading(to: contentView.leadingAnchor),
             collectionView.pinTrailing(to: contentView.trailingAnchor),
-            collectionView.pinHeight(equalTo: 100)
+            collectionView.pinHeight(equalTo: 100),
+            
         ]
         )
         NSLayoutConstraint.activate(constaintsForCell)
@@ -53,22 +54,18 @@ final class FirstFeedCell: UITableViewCell {
 }
 
 extension FirstFeedCell: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        profiles.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        CGSize(width: 80, height: 80)
-    }
-    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StoryCollectionViewCell.identifier, for: indexPath) as? StoryCollectionViewCell else { return UICollectionViewCell() }
         let profile = profiles[indexPath.item]
         cell.configure(profile: profile)
         return cell
     }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        15
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        profiles.count
     }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        CGSize(width: 80, height: 80)
+    }
+
 }
