@@ -21,6 +21,7 @@ class EnterPhoneNumberViewModel {
             confirmControllerViewModel = ConfirmControllerViewModel(viewModel: self)
             passCode?(code)
             passPhoneNumber?(phone)
+            print("New user data: phone number is \(phone), code is \(code)")
         } else {
             // TODO: - have to implement later
         }
