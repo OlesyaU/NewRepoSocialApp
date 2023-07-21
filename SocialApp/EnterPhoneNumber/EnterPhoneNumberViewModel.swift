@@ -3,7 +3,7 @@
 import Foundation
 
 class EnterPhoneNumberViewModel {
-
+    
     private var confirmControllerViewModel: ConfirmControllerViewModel?
 
     let welcomeLabelTitle = "ЗАРЕГИСТРИРОВАТЬСЯ"
@@ -12,10 +12,21 @@ class EnterPhoneNumberViewModel {
     let placeholderString = "+7 _ _ _  _ _ _  _ _  _ _"
     let buttonTitle = "ДАЛЕЕ"
     let privacyLabelTitle = "Нажимая кнопку \"Далее\"  Вы принимаете \n пользовательское Соглашение и политику конфиденциальности"
+    let alertTitle = "OOPPPSS"
+    let alertMessage = "The phone number is incorrect. Please write correctly"
+    let actionTitle = "OMG! SURE THING"
     var passCode: ((_ code : String) -> Void)?
+    var phoneNumber: String?
     var passPhoneNumber: ((_ code : String) -> Void)?
+    private (set) var state: State = .viewIsReady {
+        didSet{
+            viewModelChanged?(state)
+        }
+    }
 
-    func enterNumberPhone(phone: String)                   {
+    var viewModelChanged: ((_ state: State)-> Void)?
+
+    func enterNumberPhone(phone: String) {
         if  validate(phone: phone) {
             let code = String(describing: Array(repeating: Int.random(in: 0...9), count: 6)).applyPatternOnNumbers(pattern: "# # # # # #", replacementCharacter: "#")
             confirmControllerViewModel = ConfirmControllerViewModel(viewModel: self)
@@ -23,7 +34,7 @@ class EnterPhoneNumberViewModel {
             passPhoneNumber?(phone)
             print("New user data: phone number is \(phone), code is \(code)")
         } else {
-            // TODO: - have to implement later
+            state = .error
         }
     }
 
@@ -32,6 +43,20 @@ class EnterPhoneNumberViewModel {
         let phoneTest = NSPredicate(format: "SELF MATCHES %@", PHONE_REGEX)
         let result = phoneTest.evaluate(with: phone)
         return result
+    }
+    func changeState(_ state: State) {
+        guard let phoneNumber = phoneNumber else { return }
+        switch state {
+            case .viewIsReady:
+                print("view model state \(state)")
+            case .buttonTapped:
+                enterNumberPhone(phone: phoneNumber)
+                print("view model state \(state)")
+            case .error:
+                print("view model state \(state)")
+            case .success:
+                print("view model state \(state)")
+        }
     }
 }
 

@@ -9,7 +9,7 @@ import UIKit
 
 class EnterPhoneNumberViewController: UIViewController {
     private var viewModel: EnterPhoneNumberViewModel?
-
+    
     private let welcomeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.textBold
@@ -92,9 +92,8 @@ class EnterPhoneNumberViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        addSubviews()
-        setupConstraints()
-        setColor()
+
+        stateViewModel(state: .viewIsReady)
     }
 
     override func viewWillAppear(_ animated: Bool){
@@ -110,6 +109,7 @@ class EnterPhoneNumberViewController: UIViewController {
             ),
             animated: true
         )
+        phoneNumberField.text = ""
     }
 
     // MARK: - Helpers
@@ -143,10 +143,27 @@ class EnterPhoneNumberViewController: UIViewController {
     private func registrationButtonTapped() {
         guard let phoneNumber = phoneNumberField.text else { return }
         if !phoneNumber.isEmpty, phoneNumber.count == 16 {
-            viewModel?.enterNumberPhone(phone: phoneNumber)
-            pushConfirmController()
+            viewModel?.phoneNumber = phoneNumber
+            viewModel?.changeState(.buttonTapped)
+            stateViewModel(state: .success)
         } else {
-            showAleart()
+            viewModel?.changeState(.error)
+            stateViewModel(state: .error)
+        }
+    }
+
+    private func stateViewModel(state: State) {
+        switch state {
+            case .viewIsReady:
+                addSubviews()
+                setupConstraints()
+                setColor()
+            case .buttonTapped:
+                ()
+            case .success:
+                pushConfirmController()
+            case .error:
+                showErrorAlert()
         }
     }
 
@@ -155,6 +172,17 @@ class EnterPhoneNumberViewController: UIViewController {
         let model = ConfirmControllerViewModel(viewModel: viewModel)
         let confirmViewController = ConfirmViewController(with: model)
         navigationController?.pushViewController(confirmViewController, animated: true)
+    }
+
+    private func showErrorAlert() {
+        guard let viewModel else {return}
+        let alertTitle = viewModel.alertTitle
+        let alertMessage = viewModel.alertMessage
+        let actionTitle = viewModel.actionTitle
+        Alert.showAleart(for: self, with: alertTitle, aleartMessage: alertMessage,
+                         action1Title: actionTitle, handler: { [weak self] _ in
+            self?.phoneNumberField.text = ""
+        }, action2Title: nil)
     }
 
     @objc private func backItemAction(){
@@ -272,14 +300,4 @@ extension EnterPhoneNumberViewController: UITextFieldDelegate {
     }
 }
 
-extension EnterPhoneNumberViewController {
 
-    private func showAleart () {
-        let aleart = UIAlertController(title: "OOPPPSS", message: "The phone number is incorrect. Please write correctly", preferredStyle: .alert)
-        let action = UIAlertAction(title:  "OMG! SURE THING", style: .destructive, handler: { [weak self ] _ in
-            self?.phoneNumberField.text = ""
-        })
-        aleart.addAction(action)
-        present(aleart, animated: true)
-    }
-}
