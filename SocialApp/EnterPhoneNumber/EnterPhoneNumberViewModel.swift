@@ -5,6 +5,11 @@ import Foundation
 class EnterPhoneNumberViewModel {
     
     private var confirmControllerViewModel: ConfirmControllerViewModel?
+    private (set) var state: State = .viewIsReady {
+        didSet{
+            viewModelChanged?(state)
+        }
+    }
 
     let welcomeLabelTitle = "ЗАРЕГИСТРИРОВАТЬСЯ"
     let pushNumberUserTitle = "Введите номер"
@@ -15,24 +20,16 @@ class EnterPhoneNumberViewModel {
     let alertTitle = "OOPPPSS"
     let alertMessage = "The phone number is incorrect. Please write correctly"
     let actionTitle = "OMG! SURE THING"
-    var passCode: ((_ code : String) -> Void)?
+    var passNewUserData: ((_ phoneNumber: String, _ code : String) -> Void)?
     var phoneNumber: String?
-    var passPhoneNumber: ((_ code : String) -> Void)?
-    private (set) var state: State = .viewIsReady {
-        didSet{
-            viewModelChanged?(state)
-        }
-    }
-
     var viewModelChanged: ((_ state: State)-> Void)?
 
-    func enterNumberPhone(phone: String) {
+    private func enterNumberPhone(phone: String) {
         if  validate(phone: phone) {
             let code = String(describing: Array(repeating: Int.random(in: 0...9), count: 6)).applyPatternOnNumbers(pattern: "# # # # # #", replacementCharacter: "#")
             confirmControllerViewModel = ConfirmControllerViewModel(viewModel: self)
-            passCode?(code)
-            passPhoneNumber?(phone)
-            print("New user data: phone number is \(phone), code is \(code)")
+            passNewUserData?(phone,code)
+            print("NewUser data phone: \(phone), code: \(code)")
         } else {
             state = .error
         }
@@ -44,6 +41,7 @@ class EnterPhoneNumberViewModel {
         let result = phoneTest.evaluate(with: phone)
         return result
     }
+
     func changeState(_ state: State) {
         guard let phoneNumber = phoneNumber else { return }
         switch state {

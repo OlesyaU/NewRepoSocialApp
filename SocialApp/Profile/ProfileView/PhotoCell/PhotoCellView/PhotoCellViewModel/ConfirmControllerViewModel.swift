@@ -8,16 +8,26 @@ import UIKit
 import FirebaseAuth
 
 final class ConfirmControllerViewModel {
-    private let enteredViewModel: EnterPhoneNumberViewModel
-    private static var generatedCode = ""
-    private static var phoneNumberForRegister = ""
-
+    private struct NewUser {
+        var code: String
+        var phone: String
+    }
+    private static var newUser: NewUser?
+    private (set) var state: State = .viewIsReady {
+        didSet{
+            viewModelChanged?(state)
+        }
+    }
+    private let enterPhoneNumberViewModel: EnterPhoneNumberViewModel
     let confirmLabelTitle = "Подтверждение регистрации"
     let pushNumberUserTitle = "Мы отправили SMS с кодом на номер"
     let numberLabelTitle = "+7 999 999 99 99"
     let badgeText = "Введите код из SMS"
     let placeholderString = "_ _ _ _ _ _"
     let buttonTitle = "ЗАРЕГИСТРИРОВАТЬСЯ"
+    let alertTitle = "OOPPPSS"
+    let alertMessage = "The code is incorrect. Please write correctly"
+    let actionTitle = "OMG! SURE THING"
     let readyImage = UIImage(named: "Ready")
     let boldFont = UIFont.textBold
     let regularFont = UIFont.textRegular
@@ -29,22 +39,18 @@ final class ConfirmControllerViewModel {
     let centerText = TextAttribute.centerText
     let leftText = TextAttribute.leftText
     let blackColor = AppColors.black
+    var result: Bool?
+    var codeFromConfirmPhoneNumberViewModel: String?
+    var viewModelChanged: ((_ state: State)-> Void)?
 
     init(viewModel: EnterPhoneNumberViewModel) {
-        enteredViewModel = viewModel
-        getCode()
-        getNumber()
+        enterPhoneNumberViewModel = viewModel
+        getCodeNewUserData()
     }
 
-    private func getCode() {
-        enteredViewModel.passCode = {  code in
-            ConfirmControllerViewModel.generatedCode = code
-        }
-    }
-
-    private func getNumber() {
-        enteredViewModel.passPhoneNumber = { num in
-            ConfirmControllerViewModel.phoneNumberForRegister = num
+    private func getCodeNewUserData() {
+        enterPhoneNumberViewModel.passNewUserData = { phone, code in
+            ConfirmControllerViewModel.newUser = NewUser(code: code, phone: phone)
         }
     }
 
@@ -61,19 +67,30 @@ final class ConfirmControllerViewModel {
     }
 
     func validate(code: String) -> Bool {
-        let generatedCode = ConfirmControllerViewModel.generatedCode
-        let phoneForRegister = ConfirmControllerViewModel.phoneNumberForRegister
+        guard let generatedCode = ConfirmControllerViewModel.newUser?.code else { return false }
         var codeResult = false
         codeResult = code == generatedCode
         let CODE_REGEX = "[0-9]{1}[ ][0-9]{1}[ ][0-9]{1}[ ][0-9]{1}[ ][0-9]{1}[ ][0-9]{1}"
         let codeTest = NSPredicate(format: "SELF MATCHES %@", CODE_REGEX)
         let regexResult = codeTest.evaluate(with: code)
-        if codeResult {
-            registerNewUser(phone: phoneForRegister)
-        } else {
-            return false
-        }
         return regexResult == codeResult
+    }
+
+    func changeState(_ state: State) {
+        switch state {
+            case .viewIsReady:
+                print("view model state \(state)")
+            case .buttonTapped:
+                guard let code = codeFromConfirmPhoneNumberViewModel else { return }
+                result =  validate(code: code)
+                print("view model state \(state)")
+            case .error:
+                print("view model state \(state)")
+            case .success:
+                guard let phoneForRegister = ConfirmControllerViewModel.newUser?.phone else { return }
+                registerNewUser(phone: phoneForRegister)
+                print("view model state \(state)")
+        }
     }
 }
 

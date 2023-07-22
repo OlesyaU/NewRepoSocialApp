@@ -92,7 +92,6 @@ class EnterPhoneNumberViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         stateViewModel(state: .viewIsReady)
     }
 
@@ -267,7 +266,6 @@ extension EnterPhoneNumberViewController {
 extension EnterPhoneNumberViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-
         coordinator.animate { _ in
             self.activateOrientationConstraints()
         }
@@ -288,9 +286,7 @@ extension EnterPhoneNumberViewController: UITextFieldDelegate {
             return false
         }
         let newText = text.applyPatternOnNumbers(pattern: "### ### ## ##", replacementCharacter: "#")
-
         textField.text = "+7 \(newText)"
-
         let newLength = text.count - 3
         return newLength <= 10 || string.isEmpty
     }
